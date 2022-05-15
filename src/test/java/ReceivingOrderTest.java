@@ -25,37 +25,33 @@ public class ReceivingOrderTest {
     IngredientsData order = new IngredientsData(ingredient);
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() {
         detailsUser = new DetailsUser();
         detailsUser.registration(userRegistration);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Получение заказов авторизованного пользователя")
     @Description("Метод должен вернуть 200 с телом {'success': true}")
-    public void getOrdersAuthorizedUser() throws InterruptedException {
+    public void getOrdersAuthorizedUser() {
         accessToken = detailsUser.login(userAuthorization).extract().path("accessToken");
         detailsUser.orderCreateWithAuth(order, accessToken);
         ValidatableResponse getOrderResponse = detailsUser.getUserOrdersWithAuth(accessToken);
         getOrderResponse.assertThat().body("success", equalTo(true)).and().statusCode(200);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Получение заказов неавторизованного пользователя")
     @Description("Метод должен вернуть 401 с телом {'success': false}")
-    public void getOrdersNotAuthorizedUser() throws InterruptedException {
+    public void getOrdersNotAuthorizedUser() {
         ValidatableResponse getOrderResponse = detailsUser.getUserOrdersWithNotAuth();
         getOrderResponse.assertThat().body("success", equalTo(false)).and().statusCode(401);
-        Thread.sleep(1000);
     }
 
     @After
-    public void deleteUser() throws InterruptedException {
+    public void deleteUser() {
         ValidatableResponse response = detailsUser.login(userAuthorization);
         accessToken = response.extract().path("accessToken");
         detailsUser.removal(accessToken);
-        Thread.sleep(1000);
     }
 }

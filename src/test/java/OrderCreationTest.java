@@ -31,56 +31,50 @@ public class OrderCreationTest {
     IngredientsData invalidOrder = new IngredientsData(invalidIngredient);
 
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() {
         detailsUser = new DetailsUser();
         detailsUser.registration(userRegistration);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание заказа с авторизованным пользователем")
     @Description("Метод должен вернуть 200 с телом {'success': true}")
-    public void orderCreateWithAuthorization() throws InterruptedException {
+    public void orderCreateWithAuthorization() {
         accessToken = detailsUser.login(userAuthorization).extract().path("accessToken");
         ValidatableResponse orderResponse = detailsUser.orderCreateWithAuth(order, accessToken);
         orderResponse.assertThat().body("success", equalTo(true)).and().statusCode(200);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание заказа с неавторизованным пользователем")
     @Description("Метод должен вернуть 200 с телом {'success': true}")
-    public void orderCreateWithNotAuthorization() throws InterruptedException {
+    public void orderCreateWithNotAuthorization() {
         ValidatableResponse orderResponse = detailsUser.orderCreateWithNotAuth(order);
         orderResponse.assertThat().body("success",equalTo(true)).and().statusCode(200);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание заказа без ингредиентов")
     @Description("Метод должен вернуть 400 с телом {'success': false}")
-    public void orderCreateWithNotIngredients() throws InterruptedException {
+    public void orderCreateWithNotIngredients() {
         accessToken = detailsUser.login(userAuthorization).extract().path("accessToken");
         ValidatableResponse orderResponse = detailsUser.orderCreateWithAuth(emptyOrder, accessToken);
         orderResponse.assertThat().body("success", equalTo(false)).and().statusCode(400);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание заказа с некорректным ингредиентом")
     @Description("Метод должен вернуть 500")
-    public void orderCreateWithBadIngredients() throws InterruptedException {
+    public void orderCreateWithBadIngredients() {
         accessToken = detailsUser.login(userAuthorization).extract().path("accessToken");
         ValidatableResponse orderResponse = detailsUser.orderCreateWithAuth(invalidOrder, accessToken);
         orderResponse.statusCode(500);
-        Thread.sleep(1000);
     }
 
     @After
-    public void deleteUser() throws InterruptedException {
+    public void deleteUser() {
         ValidatableResponse response = detailsUser.login(userAuthorization);
         accessToken = response.extract().path("accessToken");
         detailsUser.removal(accessToken);
-        Thread.sleep(1000);
     }
 }

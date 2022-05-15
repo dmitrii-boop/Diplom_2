@@ -32,30 +32,27 @@ public class UserAuthorizationTest {
     @Test
     @DisplayName("Логин под существующим пользователем")
     @Description("Метод должен вернуть 200 с телом {'success': true}")
-    public void userLogin() throws InterruptedException {
+    public void userLogin() {
         ValidatableResponse response = detailsUser.registration(userRegistration);
         detailsUser.login(userAuthorization);
         response.assertThat().body("success",equalTo(true)).and().statusCode(200);
         accessToken = response.extract().path("accessToken");
         detailsUser.removal(accessToken);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Логин с несуществующим email")
     @Description("Метод должен вернуть 401 с телом {'success': false}")
-    public void userLoginWithIncorrectEmail() throws InterruptedException {
+    public void userLoginWithIncorrectEmail() {
         ValidatableResponse response = detailsUser.login(userAuthorizationWithIncorrectEmail);
         response.assertThat().body("success",equalTo(false)).and().statusCode(401);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Логин с несуществующим паролем")
     @Description("Метод должен вернуть 401 с телом {'success': false}")
-    public void userLoginWithIncorrectPassword() throws InterruptedException {
+    public void userLoginWithIncorrectPassword() {
         ValidatableResponse response = detailsUser.login(userAuthorizationWithIncorrectPassword);
         response.assertThat().body("success",equalTo(false)).and().statusCode(401);
-        Thread.sleep(1000);
     }
 }

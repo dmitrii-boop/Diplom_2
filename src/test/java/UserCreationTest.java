@@ -29,27 +29,24 @@ public class UserCreationTest {
     @Test
     @DisplayName("Создание уникального пользователя")
     @Description("Метод должен вернуть 200 с телом {'success': true}")
-    public void creatingUniqueUser() throws InterruptedException {
+    public void creatingUniqueUser() {
         ValidatableResponse response = detailsUser.registration(userRegistration);
         response.assertThat().body("success",equalTo(true)).and().statusCode(200);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание пользователя, который уже зарегистрирован")
     @Description("Метод должен вернуть 403 с телом {'success': false}")
-    public void creatingRegisteredUser() throws InterruptedException {
+    public void creatingRegisteredUser() {
         detailsUser.registration(userRegistration);
         ValidatableResponse registerResponse = detailsUser.registration(userRegistration);
         registerResponse.assertThat().body("success",equalTo(false)).and().statusCode(403);
-        Thread.sleep(1000);
     }
 
     @After
-    public void deleteUser() throws InterruptedException {
+    public void deleteUser() {
         ValidatableResponse response = detailsUser.login(userAuthorization);
         accessToken = response.extract().path("accessToken");
         detailsUser.removal(accessToken);
-        Thread.sleep(1000);
     }
 }

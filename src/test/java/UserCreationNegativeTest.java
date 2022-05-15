@@ -28,27 +28,24 @@ public class UserCreationNegativeTest {
     @Test
     @DisplayName("Создание пользователя без email")
     @Description("Метод должен вернуть 403 с телом {'success': false}")
-    public void creatingUserWithOutEmail() throws InterruptedException {
+    public void creatingUserWithOutEmail() {
         ValidatableResponse response = detailsUser.registration(userRegistrationWithOutEmail);
         response.assertThat().body("success",equalTo(false)).and().statusCode(403);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание пользователя без пароля")
     @Description("Метод должен вернуть 403 с телом {'success': false}")
-    public void creatingUserWithOutPassword() throws InterruptedException {
+    public void creatingUserWithOutPassword() {
         ValidatableResponse response = detailsUser.registration(userRegistrationWithOutPassword);
         response.assertThat().body("success",equalTo(false)).and().statusCode(403);
-        Thread.sleep(1000);
     }
 
     @Test
     @DisplayName("Создание пользователя без имени")
     @Description("Метод должен вернуть 403 с телом {'success': false}")
-    public void creatingUserWithOutName() throws InterruptedException {
+    public void creatingUserWithOutName() {
         ValidatableResponse response = detailsUser.registration(userRegistrationWithOutName);
         response.assertThat().body("success",equalTo(false)).and().statusCode(403);
-        Thread.sleep(1000);
     }
 }

@@ -8,6 +8,9 @@ import io.restassured.specification.RequestSpecification;
 public class UrlSite {
 
     public RequestSpecification getUrlSpec() {
-        return new RequestSpecBuilder().setContentType(ContentType.JSON).setBaseUri("https://stellarburgers.nomoreparties.site").build();
+        return new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .setBaseUri("https://stellarburgers.nomoreparties.site")
+                .build();
     }
 }

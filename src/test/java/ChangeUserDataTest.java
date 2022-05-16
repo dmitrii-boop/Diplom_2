@@ -8,6 +8,10 @@ import org.junit.Test;
 import pogo.UserData;
 import utils.DetailsUser;
 
+
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class ChangeUserDataTest {
@@ -53,7 +57,8 @@ public class ChangeUserDataTest {
     public void deleteUser() {
         ValidatableResponse response = detailsUser.login(userAuthorization);
         accessToken = response.extract().path("accessToken");
-        detailsUser.removal(accessToken);
+        ValidatableResponse deleteResponse = detailsUser.removal(accessToken);
+        await().atMost(1000, TimeUnit.MILLISECONDS).untilAsserted(() -> deleteResponse.statusCode(202));
     }
 }
 

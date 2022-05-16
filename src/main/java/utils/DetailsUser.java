@@ -19,8 +19,8 @@ public class DetailsUser extends UrlSite {
     }
 
     @Step("Удаление пользователя")
-    public void removal(String accessToken) {
-        given()
+    public ValidatableResponse removal(String accessToken) {
+        return given()
                 .header("Authorization", accessToken)
                 .spec(getUrlSpec())
                 .delete("api/auth/user")
